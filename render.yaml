@@ -1,0 +1,39 @@
+services:
+  # Backend FastAPI & WebSockets Service
+  - type: web
+    name: sentinel-voice-backend
+    runtime: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    plan: free
+    autoDeploy: true
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: sentinel-voice-db
+          property: connectionString
+      - key: CORS_ORIGINS
+        value: "https://*.vercel.app,http://localhost:3000,http://127.0.0.1:3000"
+      - key: FRAUD_RISK_THRESHOLD
+        value: "15.0"
+      - key: MIN_BIOMETRIC_CONFIDENCE
+        value: "85.0"
+      - key: MAX_WAIVER_AMOUNT
+        value: "50.0"
+      - key: MAX_CREDIT_LIMIT_INCREASE_PCT
+        value: "25.0"
+      - key: MODEL_NAME
+        value: "gpt-4o"
+      - key: OPENAI_API_KEY
+        sync: false
+
+databases:
+  # Managed PostgreSQL Database for Users, Sessions, Actions & Audit Logs
+  - name: sentinel-voice-db
+    plan: free
+    databaseName: sentinel_voice
+    user: sentinel_admin
