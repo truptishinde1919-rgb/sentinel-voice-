@@ -85,6 +85,23 @@ class ActionOverrideRequest(BaseModel):
     supervisor_notes: str
 
 # --- REST Endpoints ---
+@app.get("/")
+async def root():
+    return {
+        "service": settings.PROJECT_NAME,
+        "status": "online",
+        "documentation": "/docs",
+        "health_check": "/health",
+        "api_endpoints": {
+            "users": "/api/users",
+            "active_sessions": "/api/sessions/active",
+            "audit_logs": "/api/audit-logs",
+            "fraud_checks": "/api/fraud-checks",
+            "websocket_voice": "/ws/voice",
+            "websocket_servicing": "/ws/servicing/{session_id}"
+        }
+    }
+
 @app.get("/health")
 async def health_check():
     return {
