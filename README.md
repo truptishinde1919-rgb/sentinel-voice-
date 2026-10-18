@@ -24,6 +24,21 @@ You can interact with your live deployed project right now in your browser:
 
 ---
 
+## 📚 Core Documentation Index
+
+Comprehensive technical documentation is available directly in the repository:
+
+| Document | Purpose & Key Topics |
+| :--- | :--- |
+| 📄 **[PRD.md](PRD.md)** | Product Requirements Document: Problem statement, personas, functional & non-functional requirements, KPIs. |
+| 🏛️ **[Architecture.md](Architecture.md)** | System Architecture: Multi-tier diagrams, sequence flow, WebSockets, client/backend tier deep-dive. |
+| 🛡️ **[Rules.md](Rules.md)** | Deterministic Guardrails: Hardcoded banking ceilings ($50 fee waiver, 25% credit cap), 15% fraud risk rule catalog. |
+| 🎨 **[Design.md](Design.md)** | UI/UX System: Cybernetic Obsidian aesthetic, color tokens, canvas HUD, waveform visualizer specs. |
+| 📋 **[Task.md](Task.md)** | Work Breakdown Structure: Completed sprint deliverables, milestone status, and future roadmap. |
+| 🧠 **[Memory.md](Memory.md)** | Memory & Persistence: 4-tier state architecture, LangGraph scratchpad, PostgreSQL schema, PII sanitization. |
+
+---
+
 ## 🕹️ Step-by-Step: How to Test & Verify the System
 
 Open **[https://sentinel-voice-kx3d.vercel.app](https://sentinel-voice-kx3d.vercel.app)** and follow these 4 test scenarios:
