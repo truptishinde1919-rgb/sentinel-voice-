@@ -1,14 +1,72 @@
-# SentinelVoice (Team Nexus)
+# 🛡️ SentinelVoice (Team Nexus)
 ## Multimodal AI Servicing Assistant with Real-Time Fraud Verification & Autonomous Action Execution
 
-SentinelVoice is an enterprise-grade AI customer servicing platform enabling real-time, low-latency (<800ms) speech/video interaction between customers and an autonomous AI servicing agent. The system automatically executes high-frequency account actions (e.g., fee waivers, credit limit increases, card replacements) via deterministic backend tool calls while executing real-time multimodal biometric fraud checks (face matching & liveness scoring) for sensitive transactions.
+[![Live App on Vercel](https://img.shields.io/badge/Live_Demo-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://sentinel-voice-kx3d.vercel.app)
+[![Live Backend on Render](https://img.shields.io/badge/Backend_API-Render-46E3B7?style=for-the-badge&logo=render&logoColor=black)](https://sentinel-voice-backend-7u0v.onrender.com)
+[![Swagger Docs](https://img.shields.io/badge/API_Docs-Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)](https://sentinel-voice-backend-7u0v.onrender.com/docs)
+[![CI/CD Pipeline](https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/truptishinde1919-rgb/sentinel-voice-/actions)
+
+SentinelVoice is an enterprise-grade AI customer servicing platform engineered by **Team Nexus**. The system provides real-time, low-latency (<800ms) speech-to-speech and video interaction between banking customers and an autonomous AI servicing agent. It executes transactional account actions (fee waivers, credit limit reviews, card replacements) via deterministic backend tool calls while running continuous multimodal biometric fraud verification (facial liveness and acoustic scoring).
 
 ---
 
-## 🏛️ System Architecture
+## 🌐 Where to See & Check Your Live Project
+
+You can interact with your live deployed project right now in your browser:
+
+| Service | Description | Direct Link |
+| :--- | :--- | :--- |
+| **Customer Servicing Portal** | Live voice widget, biometric video HUD & interactive card | 🔗 **[sentinel-voice-kx3d.vercel.app](https://sentinel-voice-kx3d.vercel.app)** |
+| **Supervisor SOC & Compliance** | Real-time session monitoring & PostgreSQL audit trace viewer | 🔗 **[sentinel-voice-kx3d.vercel.app/admin](https://sentinel-voice-kx3d.vercel.app/admin)** |
+| **Live FastAPI Backend** | Uvicorn ASGI server with WebSockets streaming on Render | 🔗 **[sentinel-voice-backend-7u0v.onrender.com](https://sentinel-voice-backend-7u0v.onrender.com)** |
+| **Interactive API Documentation** | OpenAPI Swagger test console for all backend routes | 🔗 **[sentinel-voice-backend-7u0v.onrender.com/docs](https://sentinel-voice-backend-7u0v.onrender.com/docs)** |
+| **Database & API Health Check** | System status and PostgreSQL connection indicator | 🔗 **[sentinel-voice-backend-7u0v.onrender.com/health](https://sentinel-voice-backend-7u0v.onrender.com/health)** |
+
+---
+
+## 🕹️ Step-by-Step: How to Test & Verify the System
+
+Open **[https://sentinel-voice-kx3d.vercel.app](https://sentinel-voice-kx3d.vercel.app)** and follow these 4 test scenarios:
+
+### Test 1: Autonomous Courtesy Fee Waiver (APPROVED)
+1. In the **Demo Account Switcher** (top left), click **Elena Rostova** (Tier 1 Low Risk).
+2. Click the quick prompt chip: `"Waive my $35 overdraft fee"` (or speak it into your microphone).
+3. **What happens**:
+   - The AI evaluates biometric confidence (96.8%) and liveness (PASSED).
+   - The Deterministic Policy Engine verifies that `$35 <= $50` policy ceiling and no waivers occurred in the past 90 days.
+   - The balance is updated from **$4,885.50** to **$4,920.50** in real time!
+   - A full JSON reasoning trace is logged in the right column.
+
+### Test 2: Policy Ceiling Breach (BLOCKED BY GUARDRAILS)
+1. With **Elena Rostova** selected, click the prompt: `"Please waive my $150 credit card penalty fee"`.
+2. **What happens**:
+   - The AI detects the intent, but the **Hardcoded Policy Engine** intercepts it before any database write.
+   - The guardrail blocks the request with: `Requested fee waiver amount ($150.00) exceeds policy ceiling of $50.00`.
+   - The right-hand Audit Trace displays the red `VIOLATED` badge.
+
+### Test 3: Face Spoof / Deepfake Attack (WARM HANDOFF ESCALATION)
+1. On the center **Biometric Vision HUD**, click **"Inject Synthetic Spoof Attack"**.
+2. **What happens**:
+   - The facial bounding box turns crimson red.
+   - Dynamic Fraud Risk spikes to **64.8%** (> 15% threshold).
+   - Autonomous servicing is immediately suspended for security.
+   - A red **Warm Transfer** banner is triggered to transfer the session to a human supervisor.
+
+### Test 4: Check the Supervisor Operations Center (SOC)
+1. Click the top-right button: **Supervisor SOC Portal** (or open [sentinel-voice-kx3d.vercel.app/admin](https://sentinel-voice-kx3d.vercel.app/admin)).
+2. **What happens**:
+   - View live sessions with real-time sentiment scores and risk gauges.
+   - See the flagged session queued in the **Warm Transfer Alert Queue**.
+   - Click **"Accept Warm Handoff"** or **"Monitor Audio"** to take supervisor control.
+   - Click any row in the **Compliance Audit Trail** to inspect the full raw JSON trace payload stored in PostgreSQL.
+
+---
+
+## 🏛️ How It Works (System Architecture)
 
 ```
                                   [ CUSTOMER PORTAL ]
+                             (https://sentinel-voice-kx3d.vercel.app)
                                            │
                        ┌───────────────────┴───────────────────┐
                        │ WebRTC / Streaming WebSockets         │
@@ -22,6 +80,7 @@ SentinelVoice is an enterprise-grade AI customer servicing platform enabling rea
                                            │
                                            ▼
                                  [ SENTINEL BACKEND ]
+                 (https://sentinel-voice-backend-7u0v.onrender.com)
                                            │
                  ┌─────────────────────────┴─────────────────────────┐
                  │                                                   │
@@ -53,129 +112,35 @@ SentinelVoice is an enterprise-grade AI customer servicing platform enabling rea
 
 ---
 
-## 🚀 Key Features
+## 🔒 Deterministic Policy Engine (Guardrails Table)
 
-1. **Omni-Channel Multimodal Servicing Portal**:
-   - Sub-800ms speech-to-speech interaction powered by WebSockets and Web Speech API.
-   - Interactive live video canvas overlay with dynamic bounding box tracking and 2D/3D facial liveness scoring.
-   - Real-time customer balance and account status dashboard with live Obsidian metal card rendering.
-
-2. **Agentic Orchestration & Deterministic Guardrails**:
-   - Multi-turn conversational reasoning using LangGraph/LangChain architecture.
-   - Deterministic policy validation layer that enforces banking limits **before** database writes:
-     * Fee waiver max $50 ceiling; checks for past waivers within 90 days.
-     * Credit limit adjustments capped at 25% of current balance.
-     * Card replacement requires facial biometric match >= 85% and passed liveness.
-     * If dynamic fraud risk > 15%, autonomous execution is suspended and routed to supervisor warm transfer.
-
-3. **Biometric Fraud Detection & Risk Engine**:
-   - Passive 2D/3D facial liveness scoring and voice acoustic analysis.
-   - Dynamic Risk Scoring Engine (0–100%) calculating composite risk across biometric confidence, voice harmonics, transaction sensitivity, and customer risk tiers.
-   - Includes interactive "Inject Synthetic Spoof Attack" toggle to test fraud detection and warm handoff escalation in real time.
-
-4. **Compliance Audit & Human-in-the-Loop (HITL) Supervisor Dashboard**:
-   - Live JSON trace logging of LLM reasoning, policy rule evaluations, biometric risk scores, and tool call payloads.
-   - Admin supervisor view at `/admin` for active call monitoring, audio inspection, and one-click warm handoff takeover.
+| Rule ID | Rule Name | Condition / Ceiling | Enforcement Action |
+| :--- | :--- | :--- | :--- |
+| `GUARD-BIO-01` | Biometric Authenticity | Confidence $\ge 85.0\%$, Liveness = True | Blocks transaction; flags for supervisor |
+| `GUARD-RISK-02` | Dynamic Fraud Risk Ceiling | Fraud Risk $\le 15.0\%$ | Suspends autonomous mode; triggers warm transfer |
+| `GUARD-TIER-03` | Customer Risk Tier Check | User Tier $\le 2$ (Tier 1 & 2 allowed) | Blocks Tier 3 customers from self-service adjustments |
+| `GUARD-FEE-04A` | Max Courtesy Fee Waiver | Max $\$50.00$ per transaction | Rejects excess amounts before database write |
+| `GUARD-FEE-04B` | Fee Waiver Frequency Limit | Max 1 waiver per 90 days | Rejects if past waiver executed within 90 days |
+| `GUARD-CRD-05` | Max Credit Line Adjustment | Max $25\%$ of current limit | Routes larger requests to human underwriter |
+| `GUARD-CARD-06` | Card Replacement Security | Confidence $\ge 90\%$, Risk $\le 10\%$ | Freezes old card; issues new Contactless Visa |
 
 ---
 
-## 📂 Repository Structure
+## 📊 Database Schema (PostgreSQL Models)
 
-```
-sentinel-voice/
-├── .gitignore                   # Ignore node_modules, .next, .venv, build artifacts
-├── README.md                    # Project documentation & deployment guide
-├── render.yaml                  # 1-Click Render Blueprint (Backend + Managed PostgreSQL)
-├── .github/
-│   └── workflows/
-│       └── deploy.yml           # CI/CD pipeline for GitHub (Test Backend + Build Next.js)
-├── backend/
-│   ├── Dockerfile               # Production container for Render / Docker runtimes
-│   ├── main.py                  # FastAPI with WebSockets, CORS and supervisor broadcast
-│   ├── config.py                # Environment configuration & policy thresholds
-│   ├── requirements.txt         # Python dependencies
-│   ├── .env.example             # Backend environment template
-│   ├── agents/
-│   │   ├── servicing_agent.py   # LangGraph agent workflow & state manager
-│   │   └── guardrails.py        # Hardcoded deterministic policy validation engine
-│   ├── tools/
-│   │   ├── banking_tools.py     # Database tools (fee_waiver, limit_check, card_replace)
-│   │   └── rag_tools.py         # Knowledge base policy vector search tool
-│   ├── security/
-│   │   ├── biometrics.py        # Passive 2D/3D liveness, face match & dynamic risk scoring
-│   │   └── pii_scrubber.py      # Microsoft Presidio & regex PII masking utility
-│   └── database/
-│       ├── models.py            # SQLAlchemy models (User, Session, FraudCheck, Action, AuditLog)
-│       └── db_session.py        # Async database engine & demo seeding
-├── frontend/
-│   ├── vercel.json              # Vercel deployment route & camera/mic permissions
-│   ├── package.json             # Next.js 14, Tailwind, Lucide React, Framer Motion
-│   ├── tailwind.config.js       # Dark-mode cybernetic HUD palette
-│   ├── tsconfig.json            # TypeScript configuration
-│   ├── .env.example             # Frontend environment variables template
-│   └── src/
-│       ├── app/
-│       │   ├── layout.tsx       # Root layout
-│       │   ├── globals.css      # Glassmorphism, animations & cybernetic grid lines
-│       │   ├── page.tsx         # Customer-Facing Servicing Portal
-│       │   └── admin/
-│       │       └── page.tsx     # Compliance Audit & HITL Supervisor Dashboard
-│       ├── components/
-│       │   ├── VoiceWidget.tsx      # Waveform visualizer, mic input & speech synthesis
-│       │   ├── BiometricOverlay.tsx # Live camera feed, face bounding box & spoof injection
-│       │   ├── AuditLogger.tsx      # Real-time JSON trace logger & policy rule inspector
-│       │   └── AccountSummary.tsx   # Obsidian credit card mockup, balance & user switcher
-│       └── lib/
-│           └── websocket.ts     # Client WebSocket manager
-├── run_backend.bat              # One-click Windows runner for backend
-└── run_frontend.bat             # One-click Windows runner for frontend
-```
+1. `users`: `id`, `full_name`, `email`, `phone_number`, `account_balance`, `credit_limit`, `risk_tier`, `facial_embedding_hash`, `voice_print_id`, `created_at`.
+2. `servicing_sessions`: `id`, `user_id`, `channel`, `session_status`, `sentiment_score`, `started_at`, `ended_at`.
+3. `fraud_checks`: `id`, `session_id`, `verification_type`, `confidence_score`, `liveness_passed`, `fraud_risk_score`, `decision`, `performed_at`.
+4. `account_actions`: `id`, `user_id`, `session_id`, `action_type`, `requested_amount`, `status`, `executed_at`.
+5. `audit_logs`: `id`, `session_id`, `user_id`, `tool_name`, `policy_passed`, `policy_rules_evaluated` (JSONB), `llm_reasoning_trace`, `raw_payload` (JSONB), `created_at`.
 
 ---
 
-## 🚢 Automated 1-Click Deployment (GitHub + Render + Vercel)
+## 💻 How to Run Locally
 
-### Step 1: Push Codebase to GitHub
-```bash
-git init
-git add .
-git commit -m "feat: SentinelVoice full-stack enterprise release"
-git remote add origin https://github.com/<your-username>/sentinel-voice.git
-git branch -M main
-git push -u origin main
-```
-*The GitHub Actions CI/CD pipeline ([deploy.yml](file:///c:/Users/DELL/Downloads/Multimodal%20AI%20%20Assistant%20Fraud%20Verification/sentinel-voice/.github/workflows/deploy.yml)) will run automated guardrail tests and build the Next.js bundle on push.*
+If you also wish to run the project locally on your machine:
 
----
-
-### Step 2: Deploy Backend & PostgreSQL on Render (1-Click Blueprint)
-1. Go to your **Render Dashboard** ([dashboard.render.com](https://dashboard.render.com)).
-2. Click **New +** ➔ **Blueprint**.
-3. Connect your `sentinel-voice` repository.
-4. Render will read [`render.yaml`](file:///c:/Users/DELL/Downloads/Multimodal%20AI%20%20Assistant%20Fraud%20Verification/sentinel-voice/render.yaml) and automatically create:
-   - **sentinel-voice-db**: A Managed PostgreSQL database.
-   - **sentinel-voice-backend**: A FastAPI Web Service with WebSockets enabled.
-5. Click **Apply**.
-6. Once deployed, copy your backend URL (e.g. `https://sentinel-voice-backend.onrender.com`).
-
----
-
-### Step 3: Deploy Frontend on Vercel
-1. Go to your **Vercel Dashboard** ([vercel.com](https://vercel.com)).
-2. Click **Add New...** ➔ **Project**.
-3. Import your `sentinel-voice` GitHub repository.
-4. Set **Root Directory** to `frontend`.
-5. Under **Environment Variables**, configure:
-   - `NEXT_PUBLIC_API_URL` = `https://sentinel-voice-backend.onrender.com`
-   - `NEXT_PUBLIC_WS_URL` = `wss://sentinel-voice-backend.onrender.com`
-6. Click **Deploy**.
-7. Vercel automatically deploys with the camera/mic permissions and headers defined in [`vercel.json`](file:///c:/Users/DELL/Downloads/Multimodal%20AI%20%20Assistant%20Fraud%20Verification/sentinel-voice/frontend/vercel.json).
-
----
-
-## ⚡ Local Development Setup
-
-### 1. Start the Backend (Port 8000)
+### 1. Start the Backend:
 ```powershell
 cd "backend"
 .\.venv\Scripts\activate
@@ -183,38 +148,13 @@ python -m uvicorn main:app --reload --port 8000
 ```
 *(Or double-click `run_backend.bat`)*
 
-### 2. Start the Frontend (Port 3000)
+### 2. Start the Frontend:
 ```powershell
 cd "frontend"
 npm run dev
 ```
 *(Or double-click `run_frontend.bat`)*
 
-- **Customer Servicing Portal**: `http://localhost:3000`
-- **Supervisor SOC Dashboard**: `http://localhost:3000/admin`
-- **Backend Swagger API Docs**: `http://localhost:8000/docs`
-
----
-
-## 🧪 Interactive Test Scenarios
-
-1. **Scenario 1: Autonomous Courtesy Fee Waiver (Approved)**
-   - Select **Elena Rostova** (Tier 1 Verified).
-   - Click the prompt chip: `"Waive my $35 overdraft fee"`.
-   - **Result**: Biometrics pass (99.4%), Policy checks pass ($35 <= $50 ceiling), $35 is credited to balance in real time, and audit trace is logged.
-
-2. **Scenario 2: Policy Ceiling Breach ($150 Fee Waiver - Rejected)**
-   - Select **Elena Rostova**.
-   - Click: `"Please waive my $150 credit card penalty fee"`.
-   - **Result**: Deterministic Guardrail triggers violation: `Requested amount ($150.00) exceeds policy ceiling of $50.00`. Action is blocked before database write.
-
-3. **Scenario 3: Presentation Attack / Face Spoof Injection (Escalated)**
-   - Click **"Inject Synthetic Spoof Attack"** on the Biometric HUD.
-   - Fraud risk immediately jumps to **64.8%** (> 15% threshold).
-   - Bounding box turns crimson red, and an automatic **Warm Handoff** is triggered.
-   - Navigate to `/admin` to view the session flagged in the Warm Transfer Queue and perform supervisor takeover.
-
-4. **Scenario 4: High-Risk Tier 3 Customer Restriction**
-   - Select **Marcus Vance** (Tier 3 High Risk).
-   - Request any sensitive action (e.g. Card replacement or Credit limit increase).
-   - **Result**: Guardrail blocks execution due to Tier 3 status and escalates session to human underwriter.
+- Local Customer Portal: `http://localhost:3000`
+- Local Supervisor Portal: `http://localhost:3000/admin`
+- Local Swagger API Docs: `http://localhost:8000/docs`
